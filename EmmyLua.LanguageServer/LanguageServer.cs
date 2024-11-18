@@ -55,6 +55,7 @@ var scheduler = new EmmyScheduler();
 ls.SetScheduler(scheduler);
 ls.AddJsonSerializeContext(EmmyLuaJsonGenerateContext.Default);
 var serverContext = new ServerContext(ls);
+
 ls.OnInitialize((c, s) =>
 {
     s.Name = "EmmyLua.LanguageServer";
@@ -67,12 +68,14 @@ ls.OnInitialized((c) =>
     serverContext.StartServerAsync(initializeParams).Wait();
     return Task.CompletedTask;
 });
+
+ls.AddHandler(new CodeActionHandler(serverContext));
+
 ls.AddHandler(new TextDocumentHandler(serverContext));
 ls.AddHandler(new DefinitionHandler(serverContext));
 ls.AddHandler(new CompletionHandler(serverContext));
 ls.AddHandler(new HoverHandler(serverContext));
 ls.AddHandler(new DocumentSymbolHandler(serverContext));
-ls.AddHandler(new CodeActionHandler(serverContext));
 ls.AddHandler(new CodeLensHandler(serverContext));
 ls.AddHandler(new DocumentLinkHandler(serverContext));
 ls.AddHandler(new DocumentColorHandler(serverContext));

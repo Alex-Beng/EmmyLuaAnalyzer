@@ -5,11 +5,13 @@ using EmmyLua.CodeAnalysis.Syntax.Tree;
 
 namespace EmmyLua.CodeAnalysis.Syntax.Node.SyntaxNodes;
 
+// emmylua -> block
 public class LuaSourceSyntax(int index, LuaSyntaxTree tree) : LuaSyntaxNode(index, tree)
 {
     public LuaBlockSyntax? Block => FirstChild<LuaBlockSyntax>();
 }
 
+// block -> stat* comment*
 public class LuaBlockSyntax(int index, LuaSyntaxTree tree) : LuaSyntaxNode(index, tree)
 {
     public IEnumerable<LuaStatSyntax> StatList => ChildrenElement<LuaStatSyntax>();

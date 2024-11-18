@@ -37,6 +37,7 @@ public class CodeActionBuilder
             return result;
         }
 
+        // 根据诊断信息生成代码操作
         foreach (var diagnostic in diagnostics)
         {
             if (diagnostic is { Source: "EmmyLua", Code.StringValue: { } codeString })
