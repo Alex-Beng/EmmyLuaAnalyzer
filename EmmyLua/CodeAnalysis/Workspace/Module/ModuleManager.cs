@@ -34,6 +34,7 @@ public class ModuleManager
         Pattern.Clear();
         foreach (var item in pattern)
         {
+            // 为什么不直接设计成re
             var regexStr = $"^{Regex.Escape(item.Replace('\\', '/')).Replace("\\?", "(.*)")}$";
             Pattern.Add(new Regex(regexStr));
         }
