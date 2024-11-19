@@ -22,6 +22,11 @@ block -> stat* comment*
 comment -> (docTag*)? (Description*)? 
 
 
+docTag -> Description?
+
+
+Description -> SyntaxToken*   // TkDocDetail
+
 
 
 
