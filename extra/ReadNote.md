@@ -35,7 +35,18 @@ localStat -> localName* expr*
 localName -> attribut nameToken
 
 
-expr -> callExpr | binaryExpr | 
+expr -> nameExpr | callExpr | binaryExpr
+     | unaryExpr | tableExpr | closureExpr
+     | literalExpr | parenExpr | indexExpr
+
+
+nameExpr -> nameToken
+
+
+callExpr -> expr callArgList # prefixExpr argList
+
+
+callArgList -> 
 
 
 ## doc
