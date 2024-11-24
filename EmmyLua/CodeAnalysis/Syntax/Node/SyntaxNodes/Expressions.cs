@@ -3,17 +3,20 @@ using EmmyLua.CodeAnalysis.Syntax.Tree;
 
 namespace EmmyLua.CodeAnalysis.Syntax.Node.SyntaxNodes;
 
+// expr -> comment*
 public class LuaExprSyntax(int index, LuaSyntaxTree tree) : LuaSyntaxNode(index, tree)
 {
     public IEnumerable<LuaCommentSyntax> Comments =>
         Tree.BinderData?.GetComments(this) ?? [];
 }
 
+// name
 public class LuaNameExprSyntax(int index, LuaSyntaxTree tree) : LuaExprSyntax(index, tree)
 {
     public LuaNameToken? Name => FirstChild<LuaNameToken>();
 }
 
+// callExpr -> expr args
 public class LuaCallExprSyntax(int index, LuaSyntaxTree tree) : LuaExprSyntax(index, tree)
 {
     public LuaCallArgListSyntax? ArgList => FirstChild<LuaCallArgListSyntax>();
