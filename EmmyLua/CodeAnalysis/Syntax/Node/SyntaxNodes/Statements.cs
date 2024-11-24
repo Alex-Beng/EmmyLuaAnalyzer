@@ -9,6 +9,7 @@ public class LuaStatSyntax(int index, LuaSyntaxTree tree) : LuaSyntaxNode(index,
         Tree.BinderData?.GetComments(this) ?? [];
 }
 
+// localStat -> local? nameList assign? exprList
 public class LuaLocalStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaSyntaxToken? Local => FirstChildToken(LuaTokenKind.TkLocal);
@@ -22,6 +23,7 @@ public class LuaLocalStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(i
     public IEnumerable<LuaExprSyntax> ExprList => ChildrenElement<LuaExprSyntax>();
 }
 
+// assignStat -> varList assign? exprList
 public class LuaAssignStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public IEnumerable<LuaExprSyntax> VarList => ChildNodesBeforeToken<LuaExprSyntax>(LuaTokenKind.TkAssign);
@@ -31,22 +33,34 @@ public class LuaAssignStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(
     public LuaSyntaxToken? Assign => FirstChildToken(LuaTokenKind.TkAssign);
 }
 
+// funcStat -> 
 public class LuaFuncStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
+    /*
+    normal func: function foo() end
+    local func: local function foo() end
+    method func: object.method = function() end
+    colon func: function:method() end
+    closure func: function() end
+    */
     public bool IsLocal => FirstChildToken(LuaTokenKind.TkLocal) != null;
 
     public bool IsMethod => FirstChild<LuaIndexExprSyntax>() != null;
 
     public bool IsColonFunc => IndexExpr?.IsColonIndex == true;
 
+    // local funcName
     public LuaLocalNameSyntax? LocalName => FirstChild<LuaLocalNameSyntax>();
 
+    // funcName 
     public LuaNameExprSyntax? NameExpr => FirstChild<LuaNameExprSyntax>();
 
+    // object:funcName
     public LuaIndexExprSyntax? IndexExpr => FirstChild<LuaIndexExprSyntax>();
 
     public LuaClosureExprSyntax? ClosureExpr => FirstChild<LuaClosureExprSyntax>();
 
+    // 获得名字
     public LuaSyntaxElement? NameElement
     {
         get
@@ -72,11 +86,13 @@ public class LuaFuncStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(in
     }
 }
 
+// ::<name>::
 public class LuaLabelStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaNameToken? Name => FirstChild<LuaNameToken>();
 }
 
+// gotoStat -> goto name
 public class LuaGotoStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaSyntaxToken Goto => FirstChildToken(LuaTokenKind.TkGoto)!;
@@ -84,11 +100,13 @@ public class LuaGotoStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(in
     public LuaNameToken? LabelName => FirstChild<LuaNameToken>();
 }
 
+// break
 public class LuaBreakStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaSyntaxToken Break => FirstChildToken(LuaTokenKind.TkBreak)!;
 }
 
+// returnStat -> return expr*
 public class LuaReturnStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaSyntaxToken Return => FirstChildToken(LuaTokenKind.TkReturn)!;
@@ -96,6 +114,7 @@ public class LuaReturnStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(
     public IEnumerable<LuaExprSyntax> ExprList => ChildrenElement<LuaExprSyntax>();
 }
 
+// ifStat -> if expr then block ifCaluseStat* end
 public class LuaIfStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaSyntaxToken If => FirstChildToken(LuaTokenKind.TkIf)!;
@@ -111,6 +130,7 @@ public class LuaIfStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(inde
     public LuaSyntaxToken End => FirstChildToken(LuaTokenKind.TkEnd)!;
 }
 
+// ifCaluseStat -> elseif? else? codtion? then block 
 public class LuaIfClauseStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaSyntaxToken? ElseIf => FirstChildToken(LuaTokenKind.TkElseIf);
@@ -128,6 +148,7 @@ public class LuaIfClauseStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSynta
     public LuaBlockSyntax? Block => FirstChild<LuaBlockSyntax>();
 }
 
+// whileStat -> while expr do block end
 public class LuaWhileStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaSyntaxToken While => FirstChildToken(LuaTokenKind.TkWhile)!;
@@ -141,6 +162,7 @@ public class LuaWhileStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(i
     public LuaSyntaxToken? End => FirstChildToken(LuaTokenKind.TkEnd);
 }
 
+// do block end 
 public class LuaDoStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaSyntaxToken Do => FirstChildToken(LuaTokenKind.TkDo)!;
@@ -150,6 +172,7 @@ public class LuaDoStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(inde
     public LuaSyntaxToken? End => FirstChildToken(LuaTokenKind.TkEnd);
 }
 
+// forStat -> for paramDef = expr, expr, expr do block end
 public class LuaForStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaParamDefSyntax? IteratorName => FirstChild<LuaParamDefSyntax>();
@@ -163,6 +186,7 @@ public class LuaForStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(ind
     public LuaBlockSyntax? Block => FirstChild<LuaBlockSyntax>();
 }
 
+// forRangeStat -> for paramDef in expr do block end
 public class LuaForRangeStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public IEnumerable<LuaParamDefSyntax> IteratorNames => ChildrenElement<LuaParamDefSyntax>();
@@ -172,6 +196,7 @@ public class LuaForRangeStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSynta
     public LuaBlockSyntax? Block => FirstChild<LuaBlockSyntax>();
 }
 
+// repeatStat -> repeat block until expr
 public class LuaRepeatStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaSyntaxToken Repeat => FirstChildToken(LuaTokenKind.TkRepeat)!;
@@ -183,6 +208,7 @@ public class LuaRepeatStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(
     public LuaExprSyntax? Condition => FirstChild<LuaExprSyntax>();
 }
 
+// callStat -> expr
 public class LuaCallStatSyntax(int index, LuaSyntaxTree tree) : LuaStatSyntax(index, tree)
 {
     public LuaExprSyntax? Expr => FirstChild<LuaExprSyntax>();
