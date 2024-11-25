@@ -88,17 +88,12 @@ tableExpr -> tableField*
 
 ## doc
 
-只有三个语法规则
+// 类似的，写代码里
 
 comment -> (docTag*)? (Description*)? 
 
 
-docTag -> Description?
-
-
-Description -> SyntaxToken*   // TkDocDetail | TkDocContinue | TkEndOfLine
-@开头 | --- | EOF
-
+docTag -> Description | docTagNamedType 
 
 
 

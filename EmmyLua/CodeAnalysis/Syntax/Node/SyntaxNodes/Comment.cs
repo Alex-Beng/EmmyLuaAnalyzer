@@ -2,6 +2,7 @@
 
 namespace EmmyLua.CodeAnalysis.Syntax.Node.SyntaxNodes;
 
+// comment -> (docTag*)? (Description*)? 
 public class LuaCommentSyntax(int index, LuaSyntaxTree tree) : LuaSyntaxNode(index, tree)
 {
     public bool IsDeprecated => FirstChild<LuaDocTagDeprecatedSyntax>() != null;

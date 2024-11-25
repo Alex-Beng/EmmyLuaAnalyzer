@@ -85,6 +85,7 @@ public class LuaCallArgListSyntax(int index, LuaSyntaxTree tree) : LuaSyntaxNode
     public LuaSyntaxToken? RightParen => FirstChildToken(LuaTokenKind.TkRightParen);
 }
 
+// scriptions -> details
 public class LuaDescriptionSyntax(int index, LuaSyntaxTree tree) : LuaSyntaxNode(index, tree)
 {
     public IEnumerable<LuaSyntaxToken> Details => ChildTokens(LuaTokenKind.TkDocDetail);

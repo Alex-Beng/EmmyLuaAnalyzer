@@ -3,6 +3,7 @@ using EmmyLua.CodeAnalysis.Syntax.Tree;
 
 namespace EmmyLua.CodeAnalysis.Syntax.Node.SyntaxNodes;
 
+
 public class LuaDocTagSyntax(int index, LuaSyntaxTree tree) : LuaSyntaxNode(index, tree)
 {
     public LuaDescriptionSyntax? Description => FirstChild<LuaDescriptionSyntax>();
@@ -15,6 +16,7 @@ public abstract class LuaDocTagNamedTypeSyntax(int index, LuaSyntaxTree tree) : 
     public LuaDocAttributeSyntax? Attribute => FirstChild<LuaDocAttributeSyntax>();
 }
 
+// docTag -> name type :? typeList body?
 public class LuaDocTagClassSyntax(int index, LuaSyntaxTree tree) : LuaDocTagNamedTypeSyntax(index, tree)
 {
     public LuaDocGenericDeclareListSyntax? GenericDeclareList => FirstChild<LuaDocGenericDeclareListSyntax>();
