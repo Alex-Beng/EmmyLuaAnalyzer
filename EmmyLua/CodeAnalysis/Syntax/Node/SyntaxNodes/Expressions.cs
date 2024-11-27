@@ -194,6 +194,7 @@ public class LuaParenExprSyntax(int index, LuaSyntaxTree tree) : LuaExprSyntax(i
     public LuaSyntaxToken? RightParen => FirstChildToken(LuaTokenKind.TkRightParen);
 }
 
+// 
 public class LuaIndexExprSyntax(int index, LuaSyntaxTree tree) : LuaExprSyntax(index, tree)
 {
     public bool IsDotIndex => FirstChildToken(LuaTokenKind.TkDot) != null;
