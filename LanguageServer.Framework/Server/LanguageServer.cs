@@ -265,6 +265,7 @@ public class LanguageServer
         return false;
     }
 
+    // LSP enter point
     public async Task Run()
     {
         try

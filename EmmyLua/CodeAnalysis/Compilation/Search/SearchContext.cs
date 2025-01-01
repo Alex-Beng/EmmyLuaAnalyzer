@@ -34,6 +34,7 @@ public class SearchContext
 
     private SameTypeInfer SameTypeInfer { get; }
 
+    // compilation & features & context; modulized
     public SearchContext(LuaCompilation compilation, SearchContextFeatures features)
     {
         Compilation = compilation;
