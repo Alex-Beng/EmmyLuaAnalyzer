@@ -22,6 +22,7 @@ public static class ExpressionParser
                 p.Bump();
                 if (!SubExpression(p, OperatorKind.UNARY_PRIORITY).IsComplete)
                 {
+                    // 这个错误信息会返回给客户端
                     return m.Fail(p, LuaSyntaxKind.UnaryExpr, "unary operator not followed by expression");
                 }
                 cm = m.Complete(p, LuaSyntaxKind.UnaryExpr);
