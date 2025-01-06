@@ -23,6 +23,7 @@ public class GreenNodeBuilder
         Parents.Push(new ParentInfo(position, kind));
     }
 
+    // comment/ws/eof is trivial
     private static bool IsTrivia(GreenNode greenNode)
     {
         if (greenNode.IsNode)

@@ -14,6 +14,7 @@ public record MarkEvent
     public sealed record NodeEnd : MarkEvent;
 }
 
+// parsers will impl this interface
 public interface IMarkerEventContainer
 {
     public List<MarkEvent> Events { get; }
