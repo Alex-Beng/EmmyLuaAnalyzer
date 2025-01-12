@@ -47,6 +47,7 @@ public class LuaSyntaxTree
 
     public static LuaSyntaxTree Create(LuaDocument document)
     {
+        // 这个红树的create只有这里用啊？
         var parser = new LuaParser(new LuaLexer(document));
         var greenTreeBuilder = new LuaGreenTreeBuilder(parser);
         var (root, diagnostics, count) = greenTreeBuilder.Build();
